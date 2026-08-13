@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RikuAI — Organize sua vida financeira com clareza</title>
+<meta name="description" content="O Sistema Financeiro RikuAI ajuda você a organizar receitas, despesas e planejamento em um só lugar. Comece por R$19,90, sem mensalidade.">
+<meta name="theme-color" content="#07070B">
+
+<meta property="og:title" content="RikuAI — Organize sua vida financeira com clareza">
+<meta property="og:description" content="O Sistema Financeiro RikuAI ajuda você a organizar receitas, despesas e planejamento em um só lugar. Comece por R$19,90, sem mensalidade.">
+<meta property="og:type" content="website">
+<!-- TODO: trocar pela URL real de uma imagem 1200x630 antes de publicar -->
+<meta property="og:image" content="https://rikuai.com/og-image.png">
+<meta property="og:locale" content="pt_BR">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "Sistema Financeiro RikuAI",
+  "description": "Sistema financeiro em Google Sheets para organizar sua vida financeira com clareza, incluindo manual e vídeo tutorial.",
+  "brand": { "@type": "Brand", "name": "RikuAI" },
+  "offers": {
+    "@type": "Offer",
+    "price": "19.90",
+    "priceCurrency": "BRL",
+    "availability": "https://schema.org/InStock",
+    "url": "https://rikuai.com"
+  }
+}
+</script>
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cellipse cx='50' cy='52' rx='44' ry='13' fill='none' stroke='%23FF7A59' stroke-width='6' transform='rotate(-18 50 52)'/%3E%3Ccircle cx='50' cy='50' r='26' fill='%237C6CFF'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --bg:#07070B;
+  --bg-elevado:#0F0F17;
+  --card:rgba(255,255,255,0.045);
+  --card-hover:rgba(255,255,255,0.075);
+  --borda:rgba(255,255,255,0.09);
+  --borda-forte:rgba(255,255,255,0.18);
+  --texto:#F5F5F7;
+  --texto-suave:#A1A1AA;
+  --texto-fraco:#84848C;
+  --indigo:#7C6CFF;
+  --indigo-escuro:#5A48F0;
+  --coral:#FF7A59;
+  --coral-escuro:#B8471F;
+  --mint:#2EE6A6;
+  --vermelho:#FF6B6B;
+  --indigo-rgb:124,108,255;
+  --coral-rgb:255,122,89;
+  --mint-rgb:46,230,166;
+  --vermelho-rgb:255,107,107;
+
+  --font-sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --font-mono:'JetBrains Mono',ui-monospace,'SFMono-Regular',Menlo,monospace;
+
+  --radius-sm:12px;
+  --radius-md:16px;
+  --radius-lg:24px;
+  --radius-full:999px;
+
+  --container:1180px;
+  --pad-inline:clamp(1.25rem,5vw,2.5rem);
+  --section-pad:clamp(3.5rem,9vw,7.5rem);
+
+  --ease:cubic-bezier(.16,.8,.24,1);
+}
+
+/* ============ RESET ============ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+body{
+  background:var(--bg);
+  color:var(--texto);
+  font-family:var(--font-sans);
+  font-size:16px;
+  line-height:1.55;
+  overflow-x:hidden;
+  position:relative;
+}
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:
+    radial-gradient(ellipse 800px 500px at 15% -5%, rgba(var(--indigo-rgb),0.14), transparent 60%),
+    radial-gradient(ellipse 700px 500px at 85% 10%, rgba(var(--coral-rgb),0.09), transparent 60%);
+  pointer-events:none;
+  z-index:0;
+}
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:90;
+  pointer-events:none;
+  opacity:.035;
+  mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+img,svg{display:block;max-width:100%;}
+a{color:inherit;text-decoration:none;}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;}
+ul{list-style:none;}
+h1,h2,h3,h4{font-weight:800;line-height:1.08;letter-spacing:-0.02em;}
+::selection{background:rgba(var(--indigo-rgb),0.35);color:#fff;}
+:focus-visible{outline:2px solid var(--coral);outline-offset:3px;border-radius:4px;}
+main{position:relative;z-index:1;}
+
+/* ============ TYPE ============ */
+.eyebrow{
+  font-family:var(--font-mono);font-size:.8125rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--coral);display:inline-flex;align-items:center;gap:.55rem;font-weight:600;margin-bottom:1.1rem;
+}
+.eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--coral);box-shadow:0 0 12px var(--coral);flex:none;}
+.eyebrow--mint{color:var(--mint);}
+.eyebrow--mint::before{background:var(--mint);box-shadow:0 0 12px var(--mint);}
+h1,.h1{font-size:clamp(2.1rem,4.6vw + 1rem,3.9rem);}
+h2,.h2{font-size:clamp(1.8rem,3.2vw + 1rem,2.85rem);}
+h3,.h3{font-size:clamp(1.2rem,1vw + 1rem,1.5rem);font-weight:700;letter-spacing:-0.01em;}
+p{color:var(--texto-suave);}
+.lede{font-size:clamp(1.05rem,.6vw + .95rem,1.2rem);color:var(--texto-suave);max-width:54ch;}
+.mono{font-family:var(--font-mono);}
+.text-gradient{background:linear-gradient(95deg,var(--indigo) 10%,var(--coral) 90%);-webkit-background-clip:text;background-clip:text;color:transparent;}
+
+/* ============ LAYOUT ============ */
+.container{max-width:var(--container);margin-inline:auto;padding-inline:var(--pad-inline);position:relative;}
+.section{padding-block:var(--section-pad);position:relative;overflow:hidden;}
+.section-head{max-width:640px;margin-bottom:clamp(2.25rem,5vw,3.5rem);}
+.section-head.center{margin-inline:auto;text-align:center;}
+.section-head.center .lede{margin-inline:auto;}
+
+.glow{position:absolute;border-radius:50%;filter:blur(100px);pointer-events:none;z-index:0;opacity:.5;}
+.glow--indigo{background:var(--indigo);}
+.glow--coral{background:var(--coral);}
+
+/* ============ SATURN BRAND MARK ============ */
+.saturn{display:block;flex:none;}
+.saturn .ring{fill:none;stroke:var(--coral);}
+.saturn .planet{fill:var(--indigo);}
+.saturn-mark{width:30px;height:30px;}
+.saturn-bg{position:absolute;pointer-events:none;z-index:0;opacity:.16;animation:saturnDrift 90s linear infinite;}
+@keyframes saturnDrift{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+
+/* ============ REVEAL ============ */
+[data-reveal]{opacity:0;transform:translateY(26px);transition:opacity .7s var(--ease),transform .7s var(--ease);transition-delay:calc(var(--d,0) * 90ms);}
+[data-reveal].is-visible{opacity:1;transform:none;}
+
+/* ============ BUTTONS ============ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.55rem;
+  padding:1rem 1.85rem;border-radius:var(--radius-full);font-weight:600;font-size:1rem;
+  min-height:44px;transition:transform .25s var(--ease),box-shadow .25s var(--ease),background .25s var(--ease),border-color .25s var(--ease);
+  cursor:pointer;border:1px solid transparent;white-space:nowrap;position:relative;overflow:hidden;
+}
+.btn-primary{background:linear-gradient(135deg,var(--indigo-escuro),var(--coral-escuro));color:#fff;position:relative;isolation:isolate;}
+.btn-primary::before{
+  content:"";position:absolute;inset:0;border-radius:inherit;opacity:0;pointer-events:none;z-index:-1;
+  background:radial-gradient(120px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.35),transparent 70%);
+  transition:opacity .35s var(--ease);
+}
+@media(hover:hover){
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(var(--coral-rgb),.35);}
+  .btn-primary:hover::before{opacity:1;}
+}
+.btn-primary:active{transform:translateY(0);}
+.btn-secondary{background:rgba(255,255,255,.04);border-color:var(--borda-forte);color:var(--texto);}
+@media(hover:hover){
+  .btn-secondary:hover{border-color:rgba(var(--indigo-rgb),.55);background:rgba(var(--indigo-rgb),.09);}
+}
+.btn-full{width:100%;}
+.btn-row{display:flex;flex-wrap:wrap;gap:.85rem;}
+.trust-row{display:flex;flex-wrap:wrap;gap:.5rem 1.15rem;margin-top:1.35rem;font-family:var(--font-mono);font-size:.8rem;color:var(--texto-fraco);}
+.trust-row span{display:inline-flex;align-items:center;gap:.45rem;}
+.trust-row span::before{content:"";width:4px;height:4px;border-radius:50%;background:var(--mint);flex:none;}
+
+/* ============ CARD / GLASS ============ */
+.card{
+  background:var(--card);border:1px solid var(--borda);border-radius:var(--radius-lg);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  padding:clamp(1.5rem,3vw,2.1rem);position:relative;overflow:hidden;
+  transition:transform .35s var(--ease),border-color .35s var(--ease),box-shadow .35s var(--ease),background .35s var(--ease);
+}
+.card::before{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;
+  background:radial-gradient(380px circle at var(--mx,50%) var(--my,50%),rgba(var(--indigo-rgb),.14),transparent 60%);
+  transition:opacity .4s var(--ease);
+}
+@media(hover:hover){
+  .card:hover{transform:translateY(-4px);border-color:rgba(var(--indigo-rgb),.4);box-shadow:0 18px 50px rgba(0,0,0,.35);background:var(--card-hover);}
+  .card:hover::before{opacity:1;}
+}
+.card>*{position:relative;}
+.card-icon{
+  width:44px;height:44px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;
+  background:rgba(var(--indigo-rgb),.12);border:1px solid rgba(var(--indigo-rgb),.25);color:var(--indigo);margin-bottom:1.1rem;
+  transition:transform .3s var(--ease);
+}
+.card:hover .card-icon{transform:scale(1.08);}
+.card-icon svg{width:22px;height:22px;}
+.card h3{margin-bottom:.5rem;}
+.card p{font-size:.95rem;}
+
+/* ============ GRIDS ============ */
+.grid{display:grid;gap:clamp(1rem,2vw,1.35rem);}
+.grid-2{grid-template-columns:1fr;}
+.grid-3{grid-template-columns:1fr;}
+.grid-4{grid-template-columns:repeat(2,1fr);}
+@media(min-width:640px){.grid-4{grid-template-columns:repeat(4,1fr);}}
+@media(min-width:760px){
+  .grid-2{grid-template-columns:1fr 1fr;}
+  .grid-3{grid-template-columns:repeat(3,1fr);}
+}
+
+/* ============ HEADER ============ */
+.site-header{
+  position:sticky;top:0;z-index:30;padding-block:1.5rem;
+  border-bottom:1px solid transparent;background:transparent;
+  transition:background .35s var(--ease),border-color .35s var(--ease),padding-block .35s var(--ease);
+}
+.site-header.is-scrolled{
+  padding-block:1rem;background:rgba(7,7,11,.72);border-color:var(--borda);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+}
+.site-header .container{display:flex;align-items:center;justify-content:center;gap:.6rem;}
+.logo{font-size:1.15rem;font-weight:800;letter-spacing:-.02em;display:inline-flex;align-items:center;gap:.55rem;}
+.logo span:first-child{color:var(--texto);}
+
+/* ============ HERO ============ */
+.hero{padding-top:clamp(2rem,5vw,3.5rem);}
+.hero .container{display:grid;gap:clamp(2.5rem,6vw,3rem);align-items:center;}
+@media(min-width:920px){.hero .container{grid-template-columns:1.05fr .95fr;}}
+.hero-copy h1{margin-bottom:1.15rem;}
+.hero-price{display:flex;align-items:center;gap:.85rem;margin-top:1.5rem;flex-wrap:wrap;}
+.hero-price .val{font-family:var(--font-mono);font-size:1.5rem;font-weight:700;}
+.hero-price .sub{font-size:.82rem;color:var(--texto-fraco);}
+
+/* hero mockup */
+.hero-visual{perspective:1000px;}
+.hero-mockup{
+  background:var(--bg-elevado);border:1px solid var(--borda-forte);border-radius:var(--radius-lg);
+  padding:1.5rem;box-shadow:0 30px 80px rgba(0,0,0,.5);transition:transform .3s var(--ease);
+  transform-style:preserve-3d;position:relative;
+}
+.hero-mockup::before{
+  content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;
+  background:linear-gradient(140deg,rgba(var(--indigo-rgb),.5),transparent 40%,transparent 60%,rgba(var(--coral-rgb),.35));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;
+  pointer-events:none;
+}
+.mockup-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.35rem;}
+.mockup-dots{display:flex;gap:.4rem;}
+.mockup-dots span{width:8px;height:8px;border-radius:50%;background:var(--borda-forte);}
+.mockup-label{font-family:var(--font-mono);font-size:.75rem;color:var(--texto-fraco);}
+.mockup-balance-label{font-size:.8rem;color:var(--texto-suave);margin-bottom:.25rem;}
+.mockup-balance{font-family:var(--font-mono);font-size:clamp(1.9rem,4vw,2.4rem);font-weight:700;margin-bottom:1.5rem;}
+.mockup-mid{display:grid;grid-template-columns:auto 1fr;gap:1.5rem;align-items:center;margin-bottom:1.5rem;}
+.donut{
+  width:104px;height:104px;border-radius:50%;flex:none;position:relative;
+  background:conic-gradient(var(--indigo) 0% 35%,var(--coral) 35% 60%,rgba(255,255,255,.12) 60% 100%);
+  transform:scale(.75);opacity:0;transition:transform .9s var(--ease),opacity .9s var(--ease);
+}
+.donut::after{content:"";position:absolute;inset:20%;border-radius:50%;background:var(--bg-elevado);}
+.hero-mockup.is-visible .donut{transform:scale(1);opacity:1;}
+.mockup-legend{display:grid;gap:.55rem;}
+.legend-row{display:flex;align-items:center;justify-content:space-between;font-size:.8rem;}
+.legend-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:.5rem;}
+.legend-label{display:flex;align-items:center;color:var(--texto-suave);}
+.legend-val{font-family:var(--font-mono);color:var(--texto);}
+.mockup-bars{display:flex;align-items:flex-end;gap:.5rem;height:56px;margin-bottom:.5rem;}
+.mockup-bars .bar-track{flex:1;height:100%;display:flex;align-items:flex-end;}
+.mockup-bars .bar-fill{width:100%;height:0%;border-radius:6px 6px 0 0;background:linear-gradient(180deg,var(--indigo),var(--indigo-escuro));transition:height 1s var(--ease);}
+.hero-mockup.is-visible .mockup-bars .bar-fill{height:var(--h);}
+.mockup-bars-labels{display:flex;gap:.5rem;}
+.mockup-bars-labels span{flex:1;text-align:center;font-size:.65rem;color:var(--texto-fraco);font-family:var(--font-mono);}
+
+/* ============ VIDEO ============ */
+.video-frame{
+  position:relative;aspect-ratio:16/9;border-radius:var(--radius-lg);overflow:hidden;
+  border:1px solid var(--borda-forte);background:linear-gradient(150deg,var(--bg-elevado),#111120);
+  box-shadow:0 30px 80px rgba(0,0,0,.5);max-width:840px;margin-inline:auto;
+}
+.video-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+.video-caption{text-align:center;margin-top:1.15rem;font-size:.85rem;color:var(--texto-fraco);}
+
+/* ============ INSIGHT QUOTE ============ */
+.insight-block{max-width:760px;margin-inline:auto;text-align:center;position:relative;}
+.insight-quote{font-size:clamp(1.4rem,2.6vw + .8rem,2.35rem);font-weight:700;letter-spacing:-.01em;line-height:1.25;color:var(--texto);}
+.insight-sub{margin-top:1.25rem;color:var(--texto-fraco);font-size:.95rem;}
+
+/* ============ VIRADA (before/after) ============ */
+.virada-row{display:flex;align-items:center;justify-content:center;gap:clamp(.75rem,3vw,2rem);flex-wrap:wrap;font-family:var(--font-mono);font-size:clamp(.8rem,1.6vw,1rem);}
+.virada-row .tag{padding:.6rem 1.1rem;border-radius:var(--radius-full);border:1px solid var(--borda-forte);white-space:nowrap;}
+.virada-row .tag--bad{color:var(--vermelho);border-color:rgba(var(--vermelho-rgb),.3);}
+.virada-row .tag--good{color:var(--mint);border-color:rgba(var(--mint-rgb),.3);}
+.virada-row .arrow{color:var(--texto-fraco);}
+.virada-divider{display:flex;align-items:center;justify-content:center;margin:2rem 0;color:var(--texto-fraco);gap:1rem;font-family:var(--font-mono);font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;}
+.virada-divider::before,.virada-divider::after{content:"";flex:1;height:1px;background:var(--borda);}
+
+/* ============ STEPS ============ */
+.step{display:flex;gap:1.25rem;padding:1.5rem 0;border-top:1px solid var(--borda);}
+.step:last-child{border-bottom:1px solid var(--borda);}
+.step-num{font-family:var(--font-mono);font-size:.95rem;color:var(--coral);flex:none;width:2.5rem;padding-top:.15rem;}
+.step h3{margin-bottom:.35rem;}
+.step p{font-size:.95rem;max-width:56ch;}
+
+/* ============ PERSONAS (para quem é) ============ */
+.persona-card{display:flex;flex-direction:column;gap:.5rem;}
+.persona-tag{font-family:var(--font-mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--indigo);}
+
+/* ============ SHEET / CHART DEMO ============ */
+.sheet-wrap{border:1px solid var(--borda-forte);border-radius:var(--radius-lg);overflow:hidden;background:var(--bg-elevado);box-shadow:0 20px 60px rgba(0,0,0,.4);}
+.sheet-bar{display:flex;align-items:center;gap:.5rem;padding:.85rem 1.1rem;border-bottom:1px solid var(--borda);}
+.sheet-bar span{width:8px;height:8px;border-radius:50%;background:var(--borda-forte);}
+.sheet-table{width:100%;border-collapse:collapse;font-size:.85rem;}
+.sheet-table th{text-align:left;font-family:var(--font-mono);font-weight:500;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--texto-fraco);padding:.9rem 1.1rem;border-bottom:1px solid var(--borda);}
+.sheet-table td{padding:.95rem 1.1rem;border-bottom:1px solid var(--borda);color:var(--texto-suave);white-space:nowrap;}
+.sheet-table tr:last-child td{border-bottom:none;}
+.sheet-table td.val{font-family:var(--font-mono);color:var(--texto);text-align:right;}
+.status-pill{display:inline-flex;padding:.3rem .65rem;border-radius:var(--radius-full);font-size:.72rem;font-family:var(--font-mono);}
+.status-pago{background:rgba(var(--mint-rgb),.14);color:var(--mint);}
+.status-pendente{background:rgba(var(--indigo-rgb),.16);color:#b3a8ff;}
+.status-atrasado{background:rgba(var(--vermelho-rgb),.14);color:var(--vermelho);}
+.sheet-table-scroll{overflow-x:auto;}
+.chart-panel{padding:clamp(1.75rem,3.5vw,2.5rem);margin-top:1.5rem;}
+.chart-top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:1.5rem;margin-bottom:2rem;}
+.chart-total-label{font-size:.85rem;color:var(--texto-suave);margin-bottom:.35rem;}
+.chart-total{font-family:var(--font-mono);font-size:clamp(2rem,4vw,2.75rem);font-weight:700;}
+.sparkline{width:min(220px,45vw);height:56px;}
+.sparkline path{fill:none;stroke:var(--mint);stroke-width:2.5;stroke-linecap:round;stroke-dasharray:400;stroke-dashoffset:400;transition:stroke-dashoffset 1.4s var(--ease);}
+.chart-panel.is-visible .sparkline path{stroke-dashoffset:0;}
+.chart-bars{display:flex;gap:clamp(.75rem,2vw,1.5rem);align-items:flex-end;height:160px;margin-bottom:.75rem;}
+.chart-bar-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:.6rem;}
+.chart-bar-val{font-family:var(--font-mono);font-size:.75rem;color:var(--texto-suave);}
+.chart-bar-track{width:100%;max-width:44px;flex:1;display:flex;align-items:flex-end;}
+.chart-bar-fill{width:100%;height:0%;border-radius:8px 8px 0 0;background:linear-gradient(180deg,var(--mint),var(--indigo));transition:height 1.1s var(--ease);}
+.chart-panel.is-visible .chart-bar-fill{height:var(--h);}
+.chart-labels{display:flex;gap:clamp(.75rem,2vw,1.5rem);}
+.chart-labels span{flex:1;text-align:center;font-size:.7rem;color:var(--texto-fraco);}
+
+/* ============ COMPARACAO ============ */
+.compare-grid{display:grid;gap:1.25rem;}
+@media(min-width:760px){.compare-grid{grid-template-columns:1fr 1fr;}}
+.compare-col{border-radius:var(--radius-lg);padding:clamp(1.5rem,3vw,2rem);border:1px solid var(--borda);}
+.compare-col--sem{background:rgba(var(--vermelho-rgb),.05);border-color:rgba(var(--vermelho-rgb),.2);}
+.compare-col--com{background:rgba(var(--mint-rgb),.05);border-color:rgba(var(--mint-rgb),.22);}
+.compare-title{display:flex;align-items:center;gap:.6rem;margin-bottom:1.35rem;font-size:1.05rem;}
+.compare-list li{display:flex;gap:.75rem;padding:.65rem 0;font-size:.92rem;color:var(--texto-suave);border-top:1px solid rgba(255,255,255,.06);}
+.compare-list li:first-child{border-top:none;}
+.compare-list li svg{flex:none;width:18px;height:18px;margin-top:.15rem;}
+.compare-col--sem svg{color:var(--vermelho);}
+.compare-col--com svg{color:var(--mint);}
+
+/* ============ OFERTA COMPLEMENTAR ============ */
+.addon-card{max-width:640px;margin-inline:auto;}
+.addon-row{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:1.25rem;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--borda);}
+.addon-price-label{font-size:.78rem;color:var(--texto-fraco);}
+.addon-price-val{font-family:var(--font-mono);font-size:1.5rem;font-weight:700;}
+.addon-note{font-size:.8rem;color:var(--texto-fraco);max-width:230px;text-align:right;}
+.addon-choice-row{display:flex;flex-wrap:wrap;gap:.85rem;margin-top:1.5rem;}
+.addon-choice-row .btn{flex:1;min-width:200px;}
+@media(max-width:480px){.addon-note{text-align:left;max-width:none;}}
+
+/* ============ BIBLIOTECA (book covers) ============ */
+.library-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(1.25rem,3vw,2rem);}
+@media(min-width:640px){
+  .library-grid{grid-template-columns:repeat(4,1fr);}
+  .book-card:nth-child(2),.book-card:nth-child(4){margin-top:clamp(1.5rem,4vw,2.75rem);}
+}
+.book-card{perspective:1200px;}
+.book-cover{
+  aspect-ratio:2/3;border-radius:5px 10px 10px 5px;position:relative;overflow:hidden;
+  border:1px solid var(--borda-forte);border-left:3px solid rgba(255,255,255,.16);
+  background:linear-gradient(160deg,var(--bg-elevado),#171125 55%,var(--bg-elevado));
+  padding:1.1rem 1.1rem 1.3rem;display:flex;flex-direction:column;justify-content:space-between;
+  box-shadow:0 4px 10px rgba(0,0,0,.35),0 22px 46px rgba(0,0,0,.4);
+  transition:transform .5s var(--ease),box-shadow .5s var(--ease);
+  transform-style:preserve-3d;
+}
+@media(hover:hover){
+  .book-card:hover .book-cover{transform:rotateY(-10deg) rotateX(4deg) translateY(-8px);box-shadow:0 4px 10px rgba(0,0,0,.35),0 34px 64px rgba(0,0,0,.55);}
+  .book-card:hover .book-cover .book-gloss{transform:translateX(160%) skewX(-12deg);}
+}
+.book-ring{position:absolute;pointer-events:none;opacity:.15;top:35%;left:15%;width:140%;}
+.book-ring .ring{stroke-width:2.5;}
+.book-ring .planet{fill:none;stroke:var(--coral);stroke-width:1.5;}
+.book-gloss{
+  content:"";position:absolute;top:0;bottom:0;left:-60%;width:35%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.16),transparent);
+  transform:translateX(-40%) skewX(-12deg);transition:transform .7s var(--ease);pointer-events:none;
+}
+.book-top{display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:1;}
+.book-badge{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.06em;color:var(--coral);font-weight:600;}
+.book-cover--bonus{background:linear-gradient(160deg,var(--bg-elevado),#1f1410 55%,var(--bg-elevado));}
+.book-badge--bonus{color:var(--mint);}
+.book-title{font-size:clamp(.8rem,1.5vw,1rem);font-weight:700;line-height:1.28;margin-top:.5rem;}
+.book-sub{font-size:.68rem;color:var(--texto-fraco);line-height:1.42;margin-top:.4rem;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+.book-meta{position:relative;z-index:1;}
+.book-imprint{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.09em;text-transform:uppercase;color:var(--texto-fraco);position:relative;z-index:1;margin-top:.6rem;}
+.library-sub{margin-top:clamp(1.5rem,3vw,2rem);text-align:center;color:var(--texto-fraco);font-size:.9rem;}
+
+/* ============ O QUE RECEBE (bundle overview) ============ */
+.bundle-list{display:grid;gap:.75rem;margin-top:1.5rem;}
+.bundle-item{display:flex;align-items:center;gap:.9rem;padding:1rem 1.25rem;border:1px solid var(--borda);border-radius:var(--radius-md);background:var(--card);}
+.bundle-item .num{font-family:var(--font-mono);color:var(--coral);font-size:.85rem;flex:none;width:1.75rem;}
+.bundle-item .txt{font-size:.92rem;color:var(--texto);}
+
+/* ============ VALUE STACK ============ */
+.stack-card{overflow:hidden;}
+.stack-items{display:grid;gap:.75rem;margin-bottom:1.75rem;}
+.stack-items li{display:flex;align-items:center;gap:.75rem;font-size:.92rem;color:var(--texto-suave);}
+.stack-items svg{flex:none;width:18px;height:18px;color:var(--mint);}
+.stack-price{display:flex;flex-direction:column;align-items:center;text-align:center;gap:.5rem;padding:2rem 1.5rem 2.25rem;border-radius:var(--radius-md);background:linear-gradient(160deg,rgba(var(--indigo-rgb),.14),rgba(var(--coral-rgb),.07));}
+.stack-price-label{font-size:.85rem;color:var(--texto-suave);}
+.stack-price-val{font-family:var(--font-mono);font-size:clamp(2.5rem,5vw,3.5rem);font-weight:700;}
+
+/* ============ PROVA SOCIAL ============ */
+.testi-card{display:flex;flex-direction:column;gap:1rem;}
+.testi-quote-mark{font-family:var(--font-mono);font-size:2rem;color:var(--coral);line-height:1;}
+.testi-text{font-size:.92rem;color:var(--texto-suave);}
+.testi-who{display:flex;align-items:center;gap:.75rem;margin-top:.25rem;}
+.testi-avatar{width:38px;height:38px;border-radius:50%;background:var(--bg-elevado);border:1px solid var(--borda-forte);flex:none;display:flex;align-items:center;justify-content:center;color:var(--texto-fraco);}
+.testi-avatar svg{width:18px;height:18px;}
+.testi-name{font-size:.85rem;font-weight:600;color:var(--texto);}
+.testi-role{font-size:.78rem;color:var(--texto-fraco);}
+.testi-card--placeholder{border-style:dashed;}
+.testi-card--placeholder .testi-text{color:var(--texto-fraco);}
+
+/* ============ EXTERNAL LINK CARDS (Insider / Comunidade / Fila) ============ */
+.link-card{display:flex;flex-wrap:wrap;align-items:center;gap:1.5rem;justify-content:space-between;}
+.link-card-icon{width:56px;height:56px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;flex:none;background:rgba(var(--indigo-rgb),.14);border:1px solid rgba(var(--indigo-rgb),.3);color:var(--indigo);}
+.link-card-icon svg{width:26px;height:26px;}
+.link-card-body{flex:1;min-width:220px;}
+.link-card-body h3{margin-bottom:.4rem;}
+.link-card-body p{font-size:.92rem;}
+
+/* ============ FUTURO / CHAT SCENE ============ */
+.future-grid{display:grid;gap:clamp(2rem,5vw,3rem);align-items:center;}
+@media(min-width:900px){.future-grid{grid-template-columns:1fr 1fr;}}
+.chat-scene{background:var(--bg-elevado);border:1px solid var(--borda-forte);border-radius:var(--radius-lg);padding:1.5rem;box-shadow:0 25px 70px rgba(0,0,0,.45);}
+.chat-scene-label{font-family:var(--font-mono);font-size:.72rem;color:var(--texto-fraco);margin-bottom:1.25rem;text-transform:uppercase;letter-spacing:.06em;}
+.bubble{max-width:80%;padding:.85rem 1.1rem;border-radius:var(--radius-md);font-size:.9rem;margin-bottom:.75rem;line-height:1.45;}
+.bubble-user{background:rgba(255,255,255,.07);margin-left:auto;border-bottom-right-radius:4px;color:var(--texto);}
+.bubble-riku{background:linear-gradient(135deg,rgba(var(--indigo-rgb),.28),rgba(var(--coral-rgb),.16));border-bottom-left-radius:4px;color:var(--texto);}
+.bubble-riku strong{color:var(--coral);}
+
+/* ============ GUARANTEE ============ */
+.guarantee-box{display:flex;flex-wrap:wrap;align-items:center;gap:1.5rem;padding:clamp(1.75rem,3vw,2.25rem);}
+.guarantee-icon{flex:none;width:56px;height:56px;border-radius:50%;background:rgba(var(--mint-rgb),.12);border:1px solid rgba(var(--mint-rgb),.3);display:flex;align-items:center;justify-content:center;color:var(--mint);}
+.guarantee-icon svg{width:26px;height:26px;}
+
+/* ============ FAQ ============ */
+.faq-item{border-bottom:1px solid var(--borda);}
+.faq-item summary{
+  list-style:none;display:flex;justify-content:space-between;align-items:center;gap:1rem;
+  padding:1.25rem .25rem;cursor:pointer;font-weight:600;font-size:.98rem;
+}
+.faq-item summary::-webkit-details-marker{display:none;}
+.faq-plus{flex:none;width:22px;height:22px;position:relative;}
+.faq-plus::before,.faq-plus::after{content:"";position:absolute;background:var(--texto-suave);border-radius:2px;transition:transform .3s var(--ease);}
+.faq-plus::before{left:0;top:50%;width:100%;height:2px;transform:translateY(-50%);}
+.faq-plus::after{top:0;left:50%;width:2px;height:100%;transform:translateX(-50%);}
+.faq-item[open] .faq-plus::after{transform:translateX(-50%) rotate(90deg);opacity:0;}
+.faq-item[open] .faq-plus::before{transform:translateY(-50%) rotate(180deg);}
+.faq-answer{padding:0 .25rem 1.25rem;font-size:.9rem;max-width:66ch;}
+.faq-item[open] .faq-answer{animation:faqIn .35s var(--ease);}
+@keyframes faqIn{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
+
+/* ============ FINAL OFFER ============ */
+.final-offer{text-align:center;}
+.final-offer .section-head{margin-inline:auto;}
+.offer-card{max-width:560px;margin-inline:auto;text-align:center;padding:clamp(2rem,4vw,3rem);}
+.anchor-list{display:grid;gap:.65rem;margin:1.75rem 0;text-align:left;}
+.anchor-row{display:flex;justify-content:space-between;gap:1rem;font-size:.88rem;color:var(--texto-fraco);padding-bottom:.65rem;border-bottom:1px dashed var(--borda);}
+.anchor-row span:last-child{font-family:var(--font-mono);text-decoration:line-through;flex:none;}
+.anchor-row .anchor-bonus{text-decoration:none;color:var(--mint);}
+.anchor-total{border-bottom:none;padding-top:.15rem;font-size:.98rem;color:var(--texto);}
+.anchor-total span:first-child{font-weight:700;}
+.anchor-total span:last-child{font-weight:700;color:var(--texto-suave);}
+.price-reveal{text-align:center;margin:.5rem 0 1.75rem;}
+.price-reveal-label{font-size:.8rem;color:var(--texto-fraco);margin-bottom:.35rem;}
+.price-installment{display:flex;align-items:baseline;justify-content:center;gap:.5rem;flex-wrap:wrap;}
+.price-installment-x{font-family:var(--font-mono);font-size:.92rem;color:var(--texto-suave);font-weight:600;}
+.price-installment-big{font-family:var(--font-mono);font-size:clamp(2.6rem,8vw,4.25rem);font-weight:800;line-height:1;}
+.price-cash{font-size:.92rem;color:var(--texto-suave);margin-top:.6rem;}
+.price-cash strong{font-family:var(--font-mono);color:var(--texto);font-weight:700;}
+.offer-price{font-family:var(--font-mono);font-weight:700;font-size:clamp(3rem,7vw,4.25rem);margin:.35rem 0 1.5rem;}
+
+/* ============ FOOTER ============ */
+.site-footer{border-top:1px solid var(--borda);padding-block:clamp(2.5rem,5vw,3.5rem);position:relative;z-index:1;}
+.footer-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:2rem;margin-bottom:2rem;}
+.footer-tag{font-size:.88rem;color:var(--texto-fraco);margin-top:.5rem;max-width:32ch;}
+.footer-links{display:flex;flex-wrap:wrap;gap:1.25rem 1.5rem;}
+.footer-links a{font-size:.88rem;color:var(--texto-suave);transition:color .2s var(--ease);}
+.footer-links a:hover{color:var(--texto);}
+.footer-bottom{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.75rem;padding-top:1.5rem;border-top:1px solid var(--borda);font-size:.78rem;color:var(--texto-fraco);}
+
+/* ============ MOBILE STICKY CTA ============ */
+.mobile-sticky-cta{
+  position:fixed;left:0;right:0;bottom:0;z-index:50;
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  padding:.85rem clamp(1rem,4vw,1.5rem);
+  background:rgba(15,15,23,.85);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border-top:1px solid var(--borda-forte);
+  transform:translateY(110%);transition:transform .4s var(--ease);
+  padding-bottom:calc(.85rem + env(safe-area-inset-bottom));
+}
+.mobile-sticky-cta.is-visible{transform:translateY(0);}
+.mobile-sticky-cta .price{font-family:var(--font-mono);font-weight:700;font-size:1.1rem;flex:none;}
+.mobile-sticky-cta .price small{display:block;font-family:var(--font-sans);font-weight:400;font-size:.65rem;color:var(--texto-fraco);}
+.mobile-sticky-cta .btn{padding:.75rem 1.25rem;font-size:.9rem;}
+@media(min-width:920px){.mobile-sticky-cta{display:none;}}
+
+/* ============ REDUCED MOTION ============ */
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto;}
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <svg class="saturn saturn-mark" viewBox="0 0 100 100" aria-hidden="true">
+      <ellipse class="ring" cx="50" cy="52" rx="44" ry="13" stroke-width="7" transform="rotate(-18 50 52)"/>
+      <circle class="planet" cx="50" cy="50" r="26"/>
+    </svg>
+    <div class="logo"><span>Riku</span><span class="text-gradient">AI</span></div>
+  </div>
+</header>
+
+<main>
+  <section class="section hero" id="hero"><div class="glow glow--indigo" style="width:520px;height:520px;top:-200px;left:-180px;"></div>
+    <div class="glow glow--coral" style="width:420px;height:420px;top:40px;right:-180px;opacity:.2;"></div>
+    <svg class="saturn saturn-bg" viewBox="0 0 100 100" aria-hidden="true" style="width:620px;height:620px;top:-120px;right:-260px;">
+      <ellipse class="ring" cx="50" cy="52" rx="44" ry="13" stroke-width="2.5" transform="rotate(-18 50 52)"/>
+      <circle class="planet" cx="50" cy="50" r="26" fill="none" stroke="var(--indigo)" stroke-width="1.5"/>
+    </svg>
+    <div class="container">
+      <div class="hero-copy" data-reveal>
+        <span class="eyebrow">Seu dinheiro não precisa continuar sendo um mistério</span>
+        <h1>Saiba quanto você pode gastar sem descobrir tarde demais.</h1>
+        <p class="lede">Um sistema simples para organizar sua vida financeira, mesmo quando sua renda muda todos os meses.</p>
+        <div class="btn-row" style="margin-top:2rem;">
+          <button class="btn btn-primary" data-scroll-to="#oferta">Quero organizar minhas finanças</button>
+          <button class="btn btn-secondary" data-scroll-to="#video">Ver como funciona</button>
+        </div>
+      </div>
+      <div class="hero-visual" data-reveal style="--d:2;">
+        <div class="hero-mockup" data-panel>
+          <div class="mockup-top">
+            <span class="mockup-label">Seu painel</span>
+            <div class="mockup-dots"><span></span><span></span><span></span></div>
+          </div>
+          <div class="mockup-balance-label">Saldo disponível este mês</div>
+          <div class="mockup-balance mono" data-count-to="2480" data-prefix="R$ " data-decimals="2">R$ 0,00</div>
+          <div class="mockup-mid">
+            <div class="donut"></div>
+            <div class="mockup-legend">
+              <div class="legend-row"><span class="legend-label"><span class="legend-dot" style="background:var(--indigo)"></span>Moradia</span><span class="legend-val">35%</span></div>
+              <div class="legend-row"><span class="legend-label"><span class="legend-dot" style="background:var(--coral)"></span>Alimentação</span><span class="legend-val">25%</span></div>
+              <div class="legend-row"><span class="legend-label"><span class="legend-dot" style="background:rgba(255,255,255,.25)"></span>Outros</span><span class="legend-val">40%</span></div>
+            </div>
+          </div>
+          <div class="mockup-bars">
+            <div class="bar-track"><div class="bar-fill" style="--h:38%"></div></div>
+            <div class="bar-track"><div class="bar-fill" style="--h:64%"></div></div>
+            <div class="bar-track"><div class="bar-fill" style="--h:45%"></div></div>
+            <div class="bar-track"><div class="bar-fill" style="--h:80%"></div></div>
+            <div class="bar-track"><div class="bar-fill" style="--h:52%"></div></div>
+          </div>
+          <div class="mockup-bars-labels"><span>S1</span><span>S2</span><span>S3</span><span>S4</span><span>S5</span></div>
+        </div>
+      </div>
+    </div></section>
+  <section class="section" id="video"><div class="container">
+      <div class="section-head center" data-reveal>
+        <span class="eyebrow">VSL</span>
+        <h2>Veja o RikuAI funcionando antes de decidir.</h2>
+        <p class="lede" style="margin-inline:auto;">Em poucos minutos você entende como o sistema funciona e por que ele foi criado.</p>
+      </div>
+      <div data-reveal style="--d:1;">
+        <div class="video-frame">
+          <iframe src="https://www.youtube.com/embed/eSRPUKx5Jsk?controls=1" title="Vídeo tutorial RikuAI" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <p class="video-caption">Tutorial oficial — funciona direto no navegador do celular, sem instalar nada. <a href="https://youtu.be/eSRPUKx5Jsk" target="_blank" rel="noopener" style="color:var(--coral);text-decoration:underline;">Ver no YouTube ↗</a></p>
+      </div>
+    </div></section>
+  <section class="section" id="dor"><div class="glow glow--indigo" style="width:400px;height:400px;top:15%;left:-220px;opacity:.22;"></div>
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <span class="eyebrow">Sem rodeio</span>
+        <h2>O problema não é apenas quanto você ganha. É não saber o que acontece com o dinheiro depois que ele chega.</h2>
+      </div>
+      <div class="grid grid-3">
+        <div class="card" data-reveal style="--d:0;">
+          <h3>"Eu recebi. Mas para onde foi?"</h3>
+          <p>O salário cai, os dias passam, e quando você para pra pensar, não sabe apontar uma única razão clara pro dinheiro ter sumido.</p>
+        </div>
+        <div class="card" data-reveal style="--d:1;">
+          <h3>"Eu tenho dinheiro. Mas posso gastar?"</h3>
+          <p>Ver saldo na conta não é a mesma coisa que saber se aquele valor já tem destino — conta, compromisso ou reserva.</p>
+        </div>
+        <div class="card" data-reveal style="--d:2;">
+          <h3>"Chegou o fim do mês e eu não sei o que aconteceu."</h3>
+          <p>A sensação se repete todo mês, independente de ter sido um mês bom ou ruim de trabalho.</p>
+        </div>
+      </div>
+    </div></section>
+  <section class="section" id="insight"><div class="container">
+      <div class="insight-block" data-reveal>
+        <p class="insight-quote">Dinheiro não organizado não é sobre falta de disciplina. É sobre falta de visão.</p>
+      </div>
+      <div data-reveal style="--d:1;margin-top:clamp(2.5rem,5vw,3.5rem);">
+        <div class="virada-row">
+          <span class="tag tag--bad">Dinheiro entrando</span><span class="arrow">→</span>
+          <span class="tag tag--bad">Dinheiro saindo</span><span class="arrow">→</span>
+          <span class="tag tag--bad">Confusão</span>
+        </div>
+        <div class="virada-divider">Com o RikuAI</div>
+        <div class="virada-row">
+          <span class="tag tag--good">Dinheiro entrando</span><span class="arrow">→</span>
+          <span class="tag tag--good">Organização</span><span class="arrow">→</span>
+          <span class="tag tag--good">Visão</span><span class="arrow">→</span>
+          <span class="tag tag--good">Decisão</span>
+        </div>
+        <p class="insight-sub" style="text-align:center;margin-top:2rem;">Quando você enxerga seu dinheiro, suas decisões mudam.</p>
+      </div>
+    </div></section>
+  <section class="section" id="apresentacao"><div class="container">
+      <div class="section-head" data-reveal>
+        <span class="eyebrow">O sistema</span>
+        <h2>Conheça o Sistema Financeiro RikuAI</h2>
+        <p class="lede">Você entra com o que ganha e o que gasta, e ele devolve clareza: pra onde foi, quanto sobra, o que dá pra fazer diferente.</p>
+      </div>
+      <div class="grid grid-4">
+        <div class="card" data-reveal style="--d:0;">
+          <div class="card-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-4.5-9.5-9C1 8 3 4 7 4c2 0 4 1.5 5 3 1-1.5 3-3 5-3 4 0 6 4 4.5 8-2.5 4.5-9.5 9-9.5 9z"/></svg></div>
+          <h3>Paz</h3>
+          <p>Veja sua visão geral, contas e lançamentos em um único lugar, sem abrir extrato nenhum.</p>
+        </div>
+        <div class="card" data-reveal style="--d:1;">
+          <div class="card-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 6l2 14h12l2-14M9 10v6M15 10v6"/></svg></div>
+          <h3>Clareza</h3>
+          <p>Cada lançamento no seu devido lugar, sem esforço de organizar nada na mão.</p>
+        </div>
+        <div class="card" data-reveal style="--d:2;">
+          <div class="card-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2 3 6v6c0 5 4 8.5 9 10 5-1.5 9-5 9-10V6l-9-4z"/></svg></div>
+          <h3>Segurança</h3>
+          <p>Planejamento e metas que mostram, de verdade, quanto dá pra gastar essa semana.</p>
+        </div>
+        <div class="card" data-reveal style="--d:3;">
+          <div class="card-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3.5 2"/></svg></div>
+          <h3>Tranquilidade</h3>
+          <p>Acompanhamento constante que se mantém mesmo nas semanas corridas, porque é simples.</p>
+        </div>
+      </div>
+    </div></section>
+  <section class="section" id="como-funciona"><div class="container">
+      <div class="section-head" data-reveal>
+        <span class="eyebrow">Do pagamento ao primeiro uso</span>
+        <h2>Como funciona</h2>
+      </div>
+      <div data-reveal>
+        <div class="step">
+          <span class="step-num mono">01</span>
+          <div><h3>Compra</h3><p>Você garante acesso ao Sistema Financeiro RikuAI.</p></div>
+        </div>
+        <div class="step">
+          <span class="step-num mono">02</span>
+          <div><h3>Recebe</h3><p>Acessa os materiais e recursos incluídos, direto no seu e-mail.</p></div>
+        </div>
+        <div class="step">
+          <span class="step-num mono">03</span>
+          <div><h3>Configura</h3><p>Segue o manual e o vídeo tutorial pra deixar tudo do seu jeito.</p></div>
+        </div>
+        <div class="step">
+          <span class="step-num mono">04</span>
+          <div><h3>Começa a enxergar</h3><p>Sua vida financeira passa a ficar organizada em um único lugar.</p></div>
+        </div>
+      </div>
+    </div></section>
+  <section class="section" id="para-quem-e"><div class="container">
+      <div class="section-head center" data-reveal>
+        <span class="eyebrow">Feito para quem vive a vida real</span>
+        <h2>Para quem é o RikuAI</h2>
+      </div>
+      <div class="grid grid-3">
+        <div class="card persona-card" data-reveal style="--d:0;">
+          <span class="persona-tag">CLT</span>
+          <p>Recebe todo mês, mas nunca consegue entender para onde foi o salário.</p>
+        </div>
+        <div class="card persona-card" data-reveal style="--d:1;">
+          <span class="persona-tag">Freelancer</span>
+          <p>Um mês é ótimo. Outro nem tanto.</p>
+        </div>
+        <div class="card persona-card" data-reveal style="--d:2;">
+          <span class="persona-tag">Comissão</span>
+          <p>O valor muda e o planejamento precisa acompanhar.</p>
+        </div>
+        <div class="card persona-card" data-reveal style="--d:3;">
+          <span class="persona-tag">Diária</span>
+          <p>Você trabalha hoje pensando no que vai conseguir pagar amanhã.</p>
+        </div>
+        <div class="card persona-card" data-reveal style="--d:4;">
+          <span class="persona-tag">Renda extra</span>
+          <p>Tem dinheiro entrando de vários lugares e precisa organizar tudo.</p>
+        </div>
+        <div class="card persona-card" data-reveal style="--d:5;">
+          <span class="persona-tag">Pessoa comum</span>
+          <p>Não precisa ser especialista em finanças para começar.</p>
+        </div>
+      </div>
+    </div></section>
+  <section class="section" id="beneficios"><div class="container">
+      <div class="section-head center" data-reveal>
+        <span class="eyebrow">Por que funciona</span>
+        <h2>Feito pra quem não tem tempo de aprender ferramenta nova</h2>
+      </div>
+      <div class="grid grid-3">
+        <div class="card" data-reveal style="--d:0;">
+          <div class="card-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2 3 14h8l-1 8 11-14h-9l1-6z"/></svg></div>
+          <h3>Rápido</h3><p>Em minutos você já lançou o mês inteiro. Sem curso, sem tutorial de 40 minutos.</p>
+        </div>
+        <div class="card" data-reveal style="--d:1;">
+          <div class="card-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v4H4zM4 12h10v8H4zM17 12h3v8h-3z"/></svg></div>
+          <h3>Automático</h3><p>Fórmulas prontas fazem a conta. Você só digita o que aconteceu.</p>
+        </div>
+        <div class="card" data-reveal style="--d:2;">
+          <div class="card-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><path d="M12 4v8l6 3"/></svg></div>
+          <h3>Visual</h3><p>Números viram painel. Painel vira decisão, sem esforço de interpretar planilha.</p>
+        </div>
+        <div class="card" data-reveal style="--d:3;">
+          <div class="card-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 4v16M17 4v16M3 9h4M17 9h4M3 15h4M17 15h4"/></svg></div>
+          <h3>Flexível</h3><p>Renda fixa, freela, diária ou comissão — o sistema se adapta ao seu mês, não o contrário.</p>
+        </div>
+        <div class="card" data-reveal style="--d:4;">
+          <div class="card-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M7 15h4"/></svg></div>
+          <h3>Sem mensalidade</h3><p>Paga uma vez, usa o quanto quiser, para sempre. Sem cobrança escondida.</p>
+        </div>
+        <div class="card" data-reveal style="--d:5;">
+          <div class="card-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></div>
+          <h3>Feito pra pessoa real</h3><p>Pensado pra quem trabalha o mês inteiro, não pra quem já sabe de finanças.</p>
+        </div>
+      </div>
+    </div></section>
+  <section class="section" id="demonstracao"><div class="container">
+      <div class="section-head" data-reveal>
+        <span class="eyebrow">Por dentro do sistema</span>
+        <h2>Veja exatamente o que você vai usar</h2>
+        <p class="lede">Sem mistério. Essa é a estrutura real do Sistema Financeiro RikuAI.</p>
+      </div>
+      <div class="sheet-wrap" data-reveal>
+        <div class="sheet-bar"><span></span><span></span><span></span></div>
+        <div class="sheet-table-scroll">
+        <table class="sheet-table">
+          <thead><tr><th>Conta</th><th>Categoria</th><th>Status</th><th style="text-align:right;">Valor</th></tr></thead>
+          <tbody>
+            <tr><td>Cartão Nubank</td><td>Mercado</td><td><span class="status-pill status-pago">Pago</span></td><td class="val">R$ 312,40</td></tr>
+            <tr><td>Pix — Aluguel</td><td>Moradia</td><td><span class="status-pill status-pago">Pago</span></td><td class="val">R$ 950,00</td></tr>
+            <tr><td>Freela — Design</td><td>Renda extra</td><td><span class="status-pill status-pago">Recebido</span></td><td class="val">+ R$ 480,00</td></tr>
+            <tr><td>Conta de luz</td><td>Casa</td><td><span class="status-pill status-pendente">Pendente</span></td><td class="val">R$ 187,20</td></tr>
+            <tr><td>Cartão Inter</td><td>Lazer</td><td><span class="status-pill status-atrasado">Atrasado</span></td><td class="val">R$ 96,00</td></tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+      <div class="card chart-panel" data-reveal data-panel>
+        <div class="chart-top">
+          <div>
+            <div class="chart-total-label">Total organizado este mês</div>
+            <div class="chart-total mono"><span data-count-to="2480" data-prefix="R$ " data-decimals="2">R$ 0,00</span></div>
+          </div>
+          <svg class="sparkline" aria-hidden="true" viewBox="0 0 220 56" preserveAspectRatio="none">
+            <path d="M2 44 L38 36 L74 40 L110 22 L146 26 L182 10 L218 14"/>
+          </svg>
+        </div>
+        <div class="chart-bars">
+          <div class="chart-bar-col"><span class="chart-bar-val mono">35%</span><div class="chart-bar-track"><div class="chart-bar-fill" style="--h:70%"></div></div></div>
+          <div class="chart-bar-col"><span class="chart-bar-val mono">25%</span><div class="chart-bar-track"><div class="chart-bar-fill" style="--h:50%"></div></div></div>
+          <div class="chart-bar-col"><span class="chart-bar-val mono">14%</span><div class="chart-bar-track"><div class="chart-bar-fill" style="--h:28%"></div></div></div>
+          <div class="chart-bar-col"><span class="chart-bar-val mono">12%</span><div class="chart-bar-track"><div class="chart-bar-fill" style="--h:24%"></div></div></div>
+          <div class="chart-bar-col"><span class="chart-bar-val mono">14%</span><div class="chart-bar-track"><div class="chart-bar-fill" style="--h:28%"></div></div></div>
+        </div>
+        <div class="chart-labels mono">
+          <span>Moradia</span><span>Alimentação</span><span>Transporte</span><span>Lazer</span><span>Outros</span>
+        </div>
+      </div>
+    </div></section>
+  <section class="section" id="comparacao"><div class="container">
+      <div class="section-head center" data-reveal>
+        <span class="eyebrow">A diferença na prática</span>
+        <h2>O mesmo salário. Um destino completamente diferente.</h2>
+      </div>
+      <div class="compare-grid">
+        <div class="compare-col compare-col--sem" data-reveal style="--d:0;">
+          <div class="compare-title"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg> Sem RikuAI</div>
+          <ul class="compare-list">
+            <li><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>Não sabe quanto pode gastar essa semana</li>
+            <li><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>Descobre que faltou dinheiro só no dia 25</li>
+            <li><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>Evita abrir o extrato do banco</li>
+            <li><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>Tenta se organizar e desiste em poucos dias</li>
+          </ul>
+        </div>
+        <div class="compare-col compare-col--com" data-reveal style="--d:1;">
+          <div class="compare-title"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg> Com RikuAI</div>
+          <ul class="compare-list">
+            <li><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Sabe exatamente quanto sobra, todo dia</li>
+            <li><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Vê o problema chegando com semanas de antecedência</li>
+            <li><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Abre o painel sem culpa nenhuma</li>
+            <li><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Mantém o controle porque leva menos de 5 minutos por dia</li>
+          </ul>
+        </div>
+      </div>
+    </div></section>
+  <section class="section" id="recebe"><div class="container">
+      <div class="section-head center" data-reveal>
+        <span class="eyebrow">Tudo incluso</span>
+        <h2>Não é só uma planilha.<br>Você recebe um sistema completo para começar a organizar sua vida financeira.</h2>
+      </div>
+      <div class="bundle-list" data-reveal style="max-width:600px;margin-inline:auto;">
+        <div class="bundle-item"><span class="num mono">01</span><span class="txt">Sistema Financeiro RikuAI — dashboard, contas, planejamento, metas e sonhos</span></div>
+        <div class="bundle-item"><span class="num mono">02</span><span class="txt">Manual do Sistema Financeiro RikuAI (PDF)</span></div>
+        <div class="bundle-item"><span class="num mono">03</span><span class="txt">Vídeo tutorial</span></div>
+        <div class="bundle-item"><span class="num mono">04</span><span class="txt">Acesso ao ecossistema RikuAI</span></div>
+      </div>
+    </div></section>
+  <section class="section" id="value-stack"><div class="container">
+      <div class="section-head center" data-reveal>
+        <span class="eyebrow">O que vem no pacote</span>
+        <h2>Tudo isso em um único acesso</h2>
+      </div>
+      <div class="card stack-card" data-reveal style="max-width:520px;margin-inline:auto;">
+        <ul class="stack-items">
+          <li><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Sistema Financeiro RikuAI</li>
+          <li><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Manual + guia rápido</li>
+          <li><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Vídeo tutorial</li>
+          <li><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Acesso ao ecossistema RikuAI</li>
+        </ul>
+        <div class="stack-price">
+          <span class="stack-price-label">Hoje, por</span>
+          <span class="stack-price-val mono">R$ 19,90</span>
+          <span style="font-size:.8rem;color:var(--texto-fraco);">pagamento único</span>
+          <button class="btn btn-primary" data-scroll-to="#oferta" style="margin-top:.5rem;">Quero organizar minhas finanças</button>
+        </div>
+      </div>
+    </div></section>
+  <section class="section" id="futuro"><div class="container">
+      <div class="future-grid">
+        <div data-reveal>
+          <span class="eyebrow">E isso é só o começo</span>
+          <h2>Hoje você organiza.<br>A próxima geração do RikuAI vai fazer ainda mais.</h2>
+          <p class="lede" style="margin-top:1rem;">Imagine mandar um áudio no WhatsApp: "Gastei R$58 no mercado." E a ideia é que o RikuAI entenda essa informação e ajude a organizar sua vida financeira.</p>
+          <p style="margin-top:1rem;font-size:.9rem;">Isso ainda faz parte da visão futura do RikuAI — o aplicativo está em desenvolvimento, sem data pra sair.</p>
+          <button class="btn btn-primary" data-scroll-to="#fila-espera" style="margin-top:1.5rem;">Ver a fila de espera</button>
+        </div>
+        <div class="chat-scene" data-reveal style="--d:1;">
+          <div class="chat-scene-label">Cena ilustrativa — via WhatsApp</div>
+          <div class="bubble bubble-user">Gastei R$58 no mercado.</div>
+          <div class="bubble bubble-riku">Anotado. Saldo atualizado — ainda sobram <strong>R$312</strong> essa semana.</div>
+        </div>
+      </div>
+    </div></section>
+  <section class="section" id="fila-espera"><div class="container">
+      <div class="card" data-reveal style="max-width:600px;margin-inline:auto;text-align:center;">
+        <span class="eyebrow" style="justify-content:center;">Fila de espera</span>
+        <h2>Quer saber quando o app estiver disponível?</h2>
+        <p class="lede" style="margin-inline:auto;margin-top:.75rem;">Entre na lista de espera e seja um dos primeiros a saber.</p>
+        <a class="btn btn-primary" href="https://preview.mailerlite.io/forms/2529110/193801264854730632/share" target="_blank" rel="noopener" style="margin-top:1.5rem;">Quero acompanhar o lançamento</a>
+      </div>
+    </div></section>
+  <section class="section" id="garantia"><div class="container">
+      <div class="card guarantee-box" data-reveal>
+        <div class="guarantee-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2 4 5v6c0 5.5 3.5 9 8 11 4.5-2 8-5.5 8-11V5l-8-3z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <div>
+          <h3>7 dias para conhecer o RikuAI</h3>
+          <p>Se não fizer sentido pra você, é só pedir de volta dentro desse prazo. Simples assim.</p>
+        </div>
+      </div>
+    </div></section>
+  <section class="section" id="faq"><div class="container">
+      <div class="section-head" data-reveal>
+        <span class="eyebrow">Perguntas frequentes</span>
+        <h2>Ainda com dúvida?</h2>
+      </div>
+      <div data-reveal style="max-width:760px;">
+        <details class="faq-item"><summary>Preciso entender de planilhas?<span class="faq-plus"></span></summary><div class="faq-answer">Não. Se você sabe digitar um número numa célula, sabe usar o RikuAI.</div></details>
+        <details class="faq-item"><summary>Funciona no celular?<span class="faq-plus"></span></summary><div class="faq-answer">Sim. É um Google Sheets — abre direto no navegador ou no app do Google Sheets, sem precisar instalar nada além disso.</div></details>
+        <details class="faq-item"><summary>Preciso instalar algum programa?<span class="faq-plus"></span></summary><div class="faq-answer">Não. Tudo roda dentro do Google Sheets, que você provavelmente já tem conectado ao seu e-mail Google.</div></details>
+        <details class="faq-item"><summary>É pagamento único? Tem mensalidade?<span class="faq-plus"></span></summary><div class="faq-answer">Pagamento único de R$19,90. Não existe mensalidade nem cobrança recorrente.</div></details>
+        <details class="faq-item"><summary>Serve para quem tem renda variável?<span class="faq-plus"></span></summary><div class="faq-answer">Sim — o sistema foi pensado justamente pra quem não recebe o mesmo valor todo mês.</div></details>
+        <details class="faq-item"><summary>O que exatamente eu recebo?<span class="faq-plus"></span></summary><div class="faq-answer">O Sistema Financeiro RikuAI, o manual em PDF e o vídeo tutorial — tudo incluído nos R$19,90. A Biblioteca RikuAI (3 e-books + 1 bônus) é um complemento opcional, oferecido à parte.</div></details>
+        <details class="faq-item"><summary>Como recebo os arquivos?<span class="faq-plus"></span></summary><div class="faq-answer">Por e-mail, assim que o pagamento é aprovado.</div></details>
+        <details class="faq-item"><summary>Como funciona o tutorial?<span class="faq-plus"></span></summary><div class="faq-answer">É um vídeo curto mostrando o sistema por dentro, na prática — você pode assistir aqui mesmo na página, antes de comprar.</div></details>
+        <details class="faq-item"><summary>O que é a Biblioteca RikuAI?<span class="faq-plus"></span></summary><div class="faq-answer">São 3 e-books + 1 bônus sobre renda extra, vida financeira e decisões com renda variável. É um complemento opcional ao Sistema Financeiro RikuAI, por +R$34,70.</div></details>
+        <details class="faq-item"><summary>O aplicativo RikuAI já está disponível?<span class="faq-plus"></span></summary><div class="faq-answer">Ainda não. O Sistema Financeiro RikuAI (a planilha) está disponível agora; o aplicativo é a próxima fase, ainda em construção.</div></details>
+        <details class="faq-item"><summary>Como entro na fila de espera?<span class="faq-plus"></span></summary><div class="faq-answer">Pelo link da fila de espera, um pouco mais abaixo nesta página.</div></details>
+        <details class="faq-item"><summary>Existe garantia?<span class="faq-plus"></span></summary><div class="faq-answer">Sim, 7 dias para conhecer o RikuAI. Se não fizer sentido, é só pedir de volta.</div></details>
+      </div>
+    </div></section>
+  <section class="section final-offer" id="oferta"><div class="glow glow--indigo" style="width:520px;height:520px;top:-160px;left:50%;transform:translateX(-50%);opacity:.2;"></div>
+    <div class="container">
+      <div class="section-head center" data-reveal>
+        <h2>Sua vida financeira pode ficar mais clara.</h2>
+        <p class="lede">Comece com uma ferramenta simples, feita para quem precisa organizar o dinheiro da vida real.</p>
+      </div>
+      <div class="card offer-card" data-reveal>
+        <span class="eyebrow" style="justify-content:center;">Sistema Financeiro RikuAI</span>
+        <p style="font-size:.85rem;color:var(--texto-suave);margin-bottom:.25rem;">Você recebe:</p>
+        <ul class="stack-items" style="text-align:left;margin:1rem 0 1.75rem;">
+          <li><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Sistema Financeiro RikuAI</li>
+          <li><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Dashboard, contas e lançamentos</li>
+          <li><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Planejamento, metas e sonhos</li>
+          <li><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Manual em PDF</li>
+          <li><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Vídeo tutorial</li>
+        </ul>
+        <div class="price-reveal">
+          <div class="price-reveal-label">Hoje, por</div>
+          <div class="price-installment"><span class="price-installment-x">3x de</span><span class="price-installment-big text-gradient">R$ 8,93</span></div>
+          <p class="price-cash">ou <strong>R$ 19,90</strong> à vista · pagamento único</p>
+        </div>
+        <button class="btn btn-primary btn-full" data-scroll-to="#biblioteca">Quero organizar minhas finanças</button>
+        <div class="trust-row" style="justify-content:center;margin-top:1.25rem;">
+          <span>Pagamento único</span><span>Acesso imediato</span><span>Garantia de 7 dias</span>
+        </div>
+      </div>
+    </div></section>
+  <section class="section" id="biblioteca"><div class="glow glow--coral" style="width:460px;height:460px;top:-160px;right:-200px;opacity:.18;"></div>
+    <div class="container">
+      <div class="section-head center" data-reveal>
+        <span class="eyebrow eyebrow--mint">Complemento opcional</span>
+        <h2>Quer ir além da planilha?</h2>
+        <p class="lede" style="margin-inline:auto;">A Biblioteca RikuAI é um complemento opcional — não faz parte do Sistema Financeiro RikuAI, mas pode ser adicionada junto.</p>
+      </div>
+      <div class="library-grid">
+        <div class="book-card" data-reveal style="--d:0;">
+          <div class="book-cover">
+            <svg class="saturn book-ring" viewBox="0 0 100 100" aria-hidden="true" style="transform:rotate(-15deg);"><ellipse class="ring" cx="50" cy="52" rx="44" ry="13" transform="rotate(-18 50 52)"/><circle class="planet" cx="50" cy="50" r="26"/></svg>
+            <span class="book-gloss"></span>
+            <div class="book-top">
+              <svg class="saturn" viewBox="0 0 100 100" width="18" height="18" aria-hidden="true"><ellipse class="ring" cx="50" cy="52" rx="44" ry="13" stroke-width="9" transform="rotate(-18 50 52)"/><circle class="planet" cx="50" cy="50" r="26"/></svg>
+              <span class="book-badge">01</span>
+            </div>
+            <div class="book-meta">
+              <div class="book-title">Como Criar Uma (ou Várias) Fontes de Renda Extra</div>
+              <p class="book-sub">Ideias e estratégias pra começar a construir novas fontes de renda sem depender de uma única entrada de dinheiro.</p>
+              <div class="book-imprint">RikuAI</div>
+            </div>
+          </div>
+        </div>
+        <div class="book-card" data-reveal style="--d:1;">
+          <div class="book-cover">
+            <svg class="saturn book-ring" viewBox="0 0 100 100" aria-hidden="true" style="transform:rotate(10deg);"><ellipse class="ring" cx="50" cy="52" rx="44" ry="13" transform="rotate(-18 50 52)"/><circle class="planet" cx="50" cy="50" r="26"/></svg>
+            <span class="book-gloss"></span>
+            <div class="book-top">
+              <svg class="saturn" viewBox="0 0 100 100" width="18" height="18" aria-hidden="true"><ellipse class="ring" cx="50" cy="52" rx="44" ry="13" stroke-width="9" transform="rotate(-18 50 52)"/><circle class="planet" cx="50" cy="50" r="26"/></svg>
+              <span class="book-badge">02</span>
+            </div>
+            <div class="book-meta">
+              <div class="book-title">Como Aproveitar a Vida Sem Ficar Quebrado</div>
+              <p class="book-sub">Como organizar o dinheiro pra aproveitar o presente sem destruir o futuro.</p>
+              <div class="book-imprint">RikuAI</div>
+            </div>
+          </div>
+        </div>
+        <div class="book-card" data-reveal style="--d:2;">
+          <div class="book-cover">
+            <svg class="saturn book-ring" viewBox="0 0 100 100" aria-hidden="true" style="transform:rotate(-24deg);"><ellipse class="ring" cx="50" cy="52" rx="44" ry="13" transform="rotate(-18 50 52)"/><circle class="planet" cx="50" cy="50" r="26"/></svg>
+            <span class="book-gloss"></span>
+            <div class="book-top">
+              <svg class="saturn" viewBox="0 0 100 100" width="18" height="18" aria-hidden="true"><ellipse class="ring" cx="50" cy="52" rx="44" ry="13" stroke-width="9" transform="rotate(-18 50 52)"/><circle class="planet" cx="50" cy="50" r="26"/></svg>
+              <span class="book-badge">03</span>
+            </div>
+            <div class="book-meta">
+              <div class="book-title">O Manual de Quem Nunca Sabe Quanto Vai Ganhar no Próximo Mês</div>
+              <p class="book-sub">Um guia pra quem vive de renda variável e precisa decidir mesmo sem saber exatamente quanto vai receber.</p>
+              <div class="book-imprint">RikuAI</div>
+            </div>
+          </div>
+        </div>
+        <div class="book-card" data-reveal style="--d:3;">
+          <div class="book-cover book-cover--bonus">
+            <div class="book-top">
+              <svg class="saturn" viewBox="0 0 100 100" width="18" height="18" aria-hidden="true"><ellipse class="ring" cx="50" cy="52" rx="44" ry="13" stroke-width="9" transform="rotate(-18 50 52)"/><circle class="planet" cx="50" cy="50" r="26"/></svg>
+              <span class="book-badge book-badge--bonus">BÔNUS</span>
+            </div>
+            <svg class="saturn book-ring" viewBox="0 0 100 100" aria-hidden="true" style="transform:rotate(19deg);"><ellipse class="ring" cx="50" cy="52" rx="44" ry="13" transform="rotate(-18 50 52)"/><circle class="planet" cx="50" cy="50" r="26"/></svg>
+            <span class="book-gloss"></span>
+            <div class="book-meta">
+              <div class="book-title">Os 27 Erros Financeiros que Me Custaram Muito Dinheiro</div>
+              <p class="book-sub">27 erros reais, pra você não precisar repetir nenhum deles.</p>
+              <div class="book-imprint">RikuAI</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card addon-card" data-reveal style="margin-top:clamp(2rem,4vw,2.5rem);">
+        <div class="addon-row" style="border-top:none;padding-top:0;margin-top:0;">
+          <div>
+            <div class="addon-price-label">Valor percebido <span style="text-decoration:line-through;">R$ 97,00</span></div>
+            <div class="addon-price-val mono">+ R$ 34,70</div>
+          </div>
+        </div>
+        <!-- TODO: ligar os dois botões abaixo às URLs reais de checkout da Kirvano (com e sem o complemento) quando existirem -->
+        <div class="addon-choice-row">
+          <button class="btn btn-primary" data-checkout="com-biblioteca">Adquirir Biblioteca RikuAI</button>
+          <button class="btn btn-secondary" data-checkout="somente-planilha">Quero apenas a planilha</button>
+        </div>
+        <p class="addon-note" style="text-align:center;max-width:none;margin-top:1rem;">A planilha (R$19,90) já está garantida de qualquer forma.</p>
+      </div>
+    </div></section>
+  <section class="section" id="comunidade"><div class="container">
+      <div class="card link-card" data-reveal>
+        <div class="link-card-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8" cy="9" r="3"/><circle cx="17" cy="9" r="3"/><path d="M2 20c0-3.5 3-5.5 6-5.5s6 2 6 5.5M13 14.8c2.4.3 5 2.2 5 5.2"/></svg></div>
+        <div class="link-card-body">
+          <span class="eyebrow eyebrow--mint">Comunidade gratuita</span>
+          <h3>Você não precisa fazer isso sozinho.</h3>
+          <p>Entre gratuitamente em uma comunidade de networking para trocar experiências, fazer conexões e conversar com pessoas que também estão tentando organizar melhor a vida financeira e construir novas fontes de renda.</p>
+        </div>
+        <a class="btn btn-secondary" href="https://chat.whatsapp.com/KHrCnieAYVB94UBCfkbnij?s=cl&amp;p=i&amp;mlu=4&amp;amv=2" target="_blank" rel="noopener">Entrar na comunidade</a>
+      </div>
+    </div></section>
+</main>
+
+<footer class="site-footer"><div class="container">
+      <div class="footer-top">
+        <div>
+          <div class="logo">
+            <svg class="saturn" viewBox="0 0 100 100" width="22" height="22" aria-hidden="true"><ellipse class="ring" cx="50" cy="52" rx="44" ry="13" stroke-width="7" transform="rotate(-18 50 52)"/><circle class="planet" cx="50" cy="50" r="26"/></svg>
+            <span>Riku</span><span class="text-gradient">AI</span>
+          </div>
+          <p class="footer-tag">Organização financeira, sem complicação.</p>
+        </div>
+        <nav class="footer-links">
+          <a href="https://chat.whatsapp.com/KHrCnieAYVB94UBCfkbnij?s=cl&amp;p=i&amp;mlu=4&amp;amv=2" target="_blank" rel="noopener">Comunidade</a>
+          <a href="https://preview.mailerlite.io/forms/2529110/193801264854730632/share" target="_blank" rel="noopener">Fila de espera</a>
+          <a href="https://youtu.be/eSRPUKx5Jsk" target="_blank" rel="noopener">Tutorial</a>
+          <a href="#">Política de privacidade</a>
+          <a href="#">Termos de uso</a>
+        </nav>
+      </div>
+      <!-- TODO: incluir CNPJ / Razão social aqui, conforme exigência legal para venda de produto digital -->
+      <div class="footer-bottom">
+        <span>© 2026 RikuAI. Todos os direitos reservados.</span>
+        <span class="mono">Pagamento único · Garantia de 7 dias</span>
+      </div>
+    </div></footer>
+
+<div class="mobile-sticky-cta" id="mobile-cta"><span class="price mono" style="font-size:.95rem;"><small>Sistema Financeiro RikuAI</small>Organize suas finanças</span>
+  <button class="btn btn-primary" data-scroll-to="#oferta">Quero o RikuAI</button></div>
+
+<script>
+(function(){
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Nenhum CTA de compra usa link fixo por enquanto — todos rolam até #oferta.
+  // TODO: quando a URL real da Kirvano existir, troque os botões de compra (marcados
+  // com data-scroll-to="#oferta" nas classes .btn-primary) por <a href="URL_REAL">.
+
+  // --- Scroll reveal ---
+  var revealEls = document.querySelectorAll('[data-reveal]');
+  function showAll(){ revealEls.forEach(function(el){ el.classList.add('is-visible'); }); }
+  if (reduceMotion || !('IntersectionObserver' in window)) {
+    showAll();
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+    revealEls.forEach(function(el){ io.observe(el); });
+  }
+
+  // --- Panels that trigger internal chart/bar animation when visible ---
+  var panelEls = document.querySelectorAll('[data-panel]');
+  if (reduceMotion || !('IntersectionObserver' in window)) {
+    panelEls.forEach(function(el){ el.classList.add('is-visible'); });
+  } else {
+    var panelIo = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          panelIo.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    panelEls.forEach(function(el){ panelIo.observe(el); });
+  }
+  window.addEventListener('load', function(){
+    var hero = document.querySelector('.hero-mockup');
+    if (hero) setTimeout(function(){ hero.classList.add('is-visible'); }, reduceMotion ? 0 : 250);
+  });
+
+  // --- Count-up numbers ---
+  function formatNumber(value, decimals){
+    return value.toLocaleString('pt-BR', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+  }
+  function animateCount(el){
+    var target = parseFloat(el.getAttribute('data-count-to'));
+    var prefix = el.getAttribute('data-prefix') || '';
+    var suffix = el.getAttribute('data-suffix') || '';
+    var decimals = el.getAttribute('data-decimals') ? parseInt(el.getAttribute('data-decimals'), 10) : 0;
+    if (reduceMotion || isNaN(target)) {
+      el.textContent = prefix + formatNumber(target, decimals) + suffix;
+      return;
+    }
+    var duration = 1400;
+    var start = null;
+    function tick(ts){
+      if (start === null) start = ts;
+      var progress = Math.min((ts - start) / duration, 1);
+      var eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = prefix + formatNumber(target * eased, decimals) + suffix;
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+  var countEls = document.querySelectorAll('[data-count-to]');
+  if ('IntersectionObserver' in window) {
+    var countIo = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting) {
+          animateCount(entry.target);
+          countIo.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    countEls.forEach(function(el){ countIo.observe(el); });
+  } else {
+    countEls.forEach(animateCount);
+  }
+
+  // --- Smooth scroll for internal CTA buttons ---
+  document.querySelectorAll('[data-scroll-to]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var target = document.querySelector(btn.getAttribute('data-scroll-to'));
+      if (target) target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    });
+  });
+
+  // --- Mobile sticky CTA visibility (appears once hero scrolls out of view) ---
+  var hero = document.getElementById('hero');
+  var floatingCta = document.getElementById('mobile-cta');
+  if (hero && floatingCta) {
+    if ('IntersectionObserver' in window) {
+      var heroIo = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          var pastHero = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+          floatingCta.classList.toggle('is-visible', pastHero);
+        });
+      }, { threshold: 0 });
+      heroIo.observe(hero);
+    } else {
+      window.addEventListener('scroll', function(){
+        floatingCta.classList.toggle('is-visible', window.scrollY > hero.offsetHeight);
+      });
+    }
+  }
+
+  // --- Scroll-aware header ---
+  var header = document.querySelector('.site-header');
+  if (header) {
+    var toggleHeader = function(){ header.classList.toggle('is-scrolled', window.scrollY > 24); };
+    toggleHeader();
+    window.addEventListener('scroll', toggleHeader, { passive: true });
+  }
+
+  // --- Cursor-follow spotlight on cards and primary buttons (pointer devices only) ---
+  if (!reduceMotion && window.matchMedia('(hover:hover)').matches) {
+    document.querySelectorAll('.card, .btn-primary').forEach(function(el){
+      el.addEventListener('mousemove', function(e){
+        var rect = el.getBoundingClientRect();
+        el.style.setProperty('--mx', ((e.clientX - rect.left) / rect.width * 100) + '%');
+        el.style.setProperty('--my', ((e.clientY - rect.top) / rect.height * 100) + '%');
+      });
+    });
+  }
+
+  // --- Subtle hero parallax on pointer devices only ---
+  var heroMockup = document.querySelector('.hero-mockup');
+  var heroSection = document.getElementById('hero');
+  if (heroMockup && heroSection && !reduceMotion && window.matchMedia('(hover:hover)').matches) {
+    heroSection.addEventListener('mousemove', function(e){
+      var rect = heroSection.getBoundingClientRect();
+      var x = (e.clientX - rect.left) / rect.width - 0.5;
+      var y = (e.clientY - rect.top) / rect.height - 0.5;
+      heroMockup.style.transform = 'rotateX(' + (-y * 3.5).toFixed(2) + 'deg) rotateY(' + (x * 3.5).toFixed(2) + 'deg)';
+    });
+    heroSection.addEventListener('mouseleave', function(){
+      heroMockup.style.transform = '';
+    });
+  }
+})();
+</script>
+</body>
+</html>
