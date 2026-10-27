@@ -27,6 +27,30 @@ O build (`dist/`) é um site estático e roda em qualquer hospedagem com HTTPS: 
 
 Depois de publicar, abra o endereço no Safari do iPhone e toque em **Compartilhar › Adicionar à Tela de Início**. Assim o app abre em tela cheia, funciona sem internet depois do primeiro acesso e o iOS deixa de apagar os dados por falta de uso.
 
+### Vercel
+
+O repositório já está ligado à Vercel pelo projeto **riku-ai**, que publica a landing a partir da raiz e da branch `main`. **Não mude esse projeto**: trocar o Root Directory dele tiraria a landing do ar. O app precisa de um **projeto separado**:
+
+- Nome: `vendas-nfc`
+- Root Directory: `vendas-nfc`
+- Branch de produção: a branch onde o app está (`claude/painel-vendas-nfc`, até ser mesclada na `main`)
+- Build, instalação e saída já vêm de `vercel.json` (Vite, `npm ci`, `npm run build`, `dist`), com cache longo para `/assets` e sem cache para `sw.js`.
+
+Pela CLI, com um token da Vercel na variável `VERCEL_TOKEN`:
+
+```bash
+cd vendas-nfc
+npx vercel@latest link --yes --project vendas-nfc --token "$VERCEL_TOKEN"
+npx vercel@latest deploy --prod --token "$VERCEL_TOKEN"
+```
+
+Para conferir a URL publicada:
+
+```bash
+BASE_URL=https://<url-de-producao>/ node scripts/smoke.mjs   # telas, atualização direta, barra inferior, offline
+BASE_URL=https://<url-de-producao>/ node scripts/e2e.mjs     # fluxo completo num navegador de teste vazio
+```
+
 ## Onde ficam os dados (importante)
 
 - **No próprio navegador do aparelho (IndexedDB).** Os dados sobrevivem a fechar e recarregar a página e funcionam offline. Toda gravação é imediata, então não existe fila de sincronização pendente.
