@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Design system herdado do RikuAI (dark fintech roxo) + estados de semáforo. */
+@layer base {
+  :root {
+    --background: 250 16% 9%;
+    --surface: 250 15% 12%;
+    --surface-raised: 250 14% 15%;
+    --surface-overlay: 250 13% 19%;
+    --foreground: 250 30% 97%;
+    --foreground-muted: 250 15% 66%;
+    --foreground-subtle: 250 12% 48%;
+    --primary: 264 80% 64%;
+    --primary-foreground: 0 0% 100%;
+    --primary-dim: 264 60% 30%;
+    --border: 252 16% 20%;
+    --success: 142 70% 48%;
+    --warning: 38 92% 55%;
+    --danger: 4 86% 62%;
+    --neutral: 250 10% 58%;
+    --demo: 190 85% 55%;
+    --shadow-card: 0 4px 24px 0 hsl(250 30% 3% / 0.55);
+    --gradient-card: linear-gradient(145deg, hsl(250 15% 14%), hsl(250 16% 10.5%));
+    --gradient-hero: linear-gradient(135deg, hsl(264 80% 62% / 0.22), hsl(250 16% 10%) 70%);
+    --gradient-brand: linear-gradient(120deg, hsl(275 82% 52%), hsl(288 72% 56%) 45%, hsl(14 92% 65%));
+    --chart-1: 264 80% 66%;
+    --chart-2: 190 85% 55%;
+    --chart-3: 14 92% 65%;
+    --chart-4: 142 70% 48%;
+    --chart-5: 38 92% 55%;
+    color-scheme: dark;
+  }
+
+  :root[data-appearance="light"] {
+    --background: 250 45% 98%;
+    --surface: 0 0% 100%;
+    --surface-raised: 250 30% 95.5%;
+    --surface-overlay: 250 26% 92%;
+    --foreground: 252 38% 11%;
+    --foreground-muted: 252 14% 34%;
+    --foreground-subtle: 252 11% 46%;
+    --primary: 264 70% 52%;
+    --primary-dim: 264 60% 88%;
+    --border: 250 18% 84%;
+    --success: 142 66% 30%;
+    --warning: 32 90% 36%;
+    --danger: 4 78% 44%;
+    --neutral: 252 10% 46%;
+    --demo: 195 85% 32%;
+    --shadow-card: 0 1px 2px hsl(252 20% 30% / 0.05), 0 8px 24px -8px hsl(252 20% 30% / 0.14);
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(250 30% 97%));
+    --gradient-hero: linear-gradient(135deg, hsl(264 70% 52% / 0.12), hsl(250 35% 98%) 70%);
+    color-scheme: light;
+  }
+
+  * { @apply border-border; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-feature-settings: "tnum" 1, "cv11" 1;
+    -webkit-tap-highlight-color: transparent;
+  }
+  button, a, [role="button"] { touch-action: manipulation; }
+  :focus-visible { outline: 2px solid hsl(var(--primary)); outline-offset: 2px; border-radius: 10px; }
+  input, select, textarea { font-size: 16px; } /* evita zoom automático no iPhone */
+}
+
+@layer utilities {
+  .card { background: var(--gradient-card); border: 1px solid hsl(var(--border) / 0.75); box-shadow: var(--shadow-card); border-radius: 1.25rem; }
+  .gradient-hero { background: var(--gradient-hero); }
+  .gradient-brand { background-image: var(--gradient-brand); }
+  .glass { background: hsl(var(--surface) / 0.78); backdrop-filter: blur(22px) saturate(170%); -webkit-backdrop-filter: blur(22px) saturate(170%); }
+  .press { transition: transform .16s cubic-bezier(.34,1.56,.64,1); }
+  .press:active { transform: scale(.97); }
+  .tabular { font-variant-numeric: tabular-nums; }
+  .pb-safe { padding-bottom: max(env(safe-area-inset-bottom), 0.75rem); }
+  .pt-safe { padding-top: max(env(safe-area-inset-top), 0.5rem); }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { scrollbar-width: none; }
+  .text-ok { color: hsl(var(--success)); }
+  .text-warn { color: hsl(var(--warning)); }
+  .text-bad { color: hsl(var(--danger)); }
+  .text-neutral { color: hsl(var(--neutral)); }
+  .bg-ok-soft { background: hsl(var(--success) / 0.13); }
+  .bg-warn-soft { background: hsl(var(--warning) / 0.14); }
+  .bg-bad-soft { background: hsl(var(--danger) / 0.13); }
+  .bg-neutral-soft { background: hsl(var(--neutral) / 0.13); }
+  .bg-primary-soft { background: hsl(var(--primary) / 0.14); }
+  .bg-demo-soft { background: hsl(var(--demo) / 0.14); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+.recharts-cartesian-axis-tick text { fill: hsl(var(--foreground-muted)); font-size: 11px; }
+.recharts-cartesian-grid line { stroke: hsl(var(--border)); }
+.recharts-default-tooltip { border-radius: 12px !important; }
